@@ -1,0 +1,23 @@
+{
+  "name": "my_service",
+  "version": "1.0.0",
+  "description": "documentation project",
+  "main": "handler.js",
+  "dependencies": {
+    "serverless-aws-documentation": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rsolank1/Myserverless.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rsolank1/Myserverless/issues"
+  },
+  "homepage": "https://github.com/rsolank1/Myserverless#readme"
+}

@@ -25,8 +25,53 @@ provider:
   runtime: nodejs12.x
 
 # you can overwrite defaults here
- stage: dev
- region: ap-south-1
+  stage: dev
+  region: ap-south-1
+
+plugins:
+  - serverless-aws-documentation
+
+
+custom:
+  # You must have the documentation object
+  documentation:
+    # this is general info about the API
+    api:
+      info:
+        version: '2'
+        title: Example API
+        description: Some example API
+        termsOfService: https://www.google.com
+        contact:
+          name: The contact person
+          url: https://www.serverless.com/framework
+          email: some-fake@email.com
+        license:
+          name: The license
+          url: https://www.github.com
+      resources:
+        -
+          path: "users/create"
+          description: "This is users/ create path description"
+    models:
+      -
+        name: MessageResponse
+        contentType: "application/json"
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+      -
+        name: 400JsonResponse
+        contentType: "application/json"
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+            statusCode:
+              type: number 
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -63,10 +108,50 @@ functions:
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
-   events:
-     - http:
-         path: users/create
-         method: get
+    events:
+      - http:
+          path: users/create
+          method: get
+          documentation:
+            summary: this is a samary of hello function
+            description: this is a description of hello function 
+            requestBody:
+              description: "Request body description"
+            requestHeaders:
+              -
+                name: "x-header"
+                description: "Header description"
+              -
+                name: "Authorization"
+                description: "Auth Header description"
+            queryParams:
+              -
+                name: firstParam
+                description: The first param that we want, you MUST pass it
+                required: true
+            pathParams:
+              -
+                name: "id"
+                description: "ID of the thing you want to create"
+            methodResponses:
+              -
+                statusCode: "200"
+                responseBody:
+                  description: "this is Response body description with 200 status code"
+                responseHeaders:
+                  -
+                    name: "x-superheader"
+                    description: "this is a super header"
+                responseModels:
+                  "application/json": MessageResponse
+              -
+                statusCode: "400"
+                responseBody:
+                  description: "this is Response body description with 400 status code"
+                responseModels:
+                  "application/json": 400JsonResponse
+
+
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
@@ -85,7 +170,7 @@ functions:
 #            detail:
 #              state:
 #                - pending
-     - cloudwatchLog: '/aws/lambda/hello'
+      # - cloudwatchLog: '/aws/lambda/hello'
 #      - cognitoUserPool:
 #          pool: MyUserPool
 #          trigger: PreSignUp
